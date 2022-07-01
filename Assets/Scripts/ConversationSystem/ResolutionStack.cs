@@ -6,6 +6,7 @@ using UnityEngine;
 public class ResolutionStack
 {
     // customized stack data structure
+    [SerializeField]
     private List<Speech> stack;
     public int memorySize = 5;
 

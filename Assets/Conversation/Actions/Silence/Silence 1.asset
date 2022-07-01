@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 2e75a01c7e1d74d4c8d79d409467dee6, type: 2}
   topic: {fileID: 0}
-  title: Make direct, unblinking eye contact
+  title: Make direct eye contact
   description: Stare into their soul
+  prereqs: []

@@ -17,5 +17,9 @@ MonoBehaviour:
   closableByOther: 0
   transitions:
   - to: {fileID: 11400000, guid: a1b109035756ea4409414a85e946c625, type: 2}
-  - to: {fileID: 11400000, guid: f72c8a443b94079469feff6a5f92e934, type: 2}
+    fromHistory: 1
+    fromStack: 0
   - to: {fileID: 11400000, guid: a6f584415a5c8434e881aa7cbf5a24ba, type: 2}
+    fromHistory: 1
+    fromStack: 0
+  blockStack: 0

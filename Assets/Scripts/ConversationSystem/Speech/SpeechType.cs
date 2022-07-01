@@ -10,6 +10,7 @@ public class SpeechType : ScriptableObject
     public SpeechType closedBy;
     public bool closableBySelf;
     public bool closableByOther;
+    public bool changesTopic = false;
     public List<Transition> transitions;
 }
 
@@ -17,4 +18,6 @@ public class SpeechType : ScriptableObject
 public class Transition
 {
     public SpeechType to;
+    public bool fromHistory = true;
+    public bool fromStack = true;
 }

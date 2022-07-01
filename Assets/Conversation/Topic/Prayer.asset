@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c60c4bcab1ec6f4492a3c2a630e7ce2, type: 3}
   m_Name: Prayer
   m_EditorClassIdentifier: 
-  category: {fileID: 11400000, guid: 1604af19c66fbaf468017954aaaa09c3, type: 2}
+  subcategory: {fileID: 11400000, guid: c75540f1a577ef443b4715f1a2bc0771, type: 2}
+  abstractCommitment: {fileID: 0}

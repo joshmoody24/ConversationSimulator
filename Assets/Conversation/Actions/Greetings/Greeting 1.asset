@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 2b1db19ce0111164ab9fe43f8563d0aa, type: 2}
   topic: {fileID: 0}
-  title: Greet your opponent with a bow
+  title: Greet your adversary warmly
   description: It's the respectful thing to do.
+  prereqs: []

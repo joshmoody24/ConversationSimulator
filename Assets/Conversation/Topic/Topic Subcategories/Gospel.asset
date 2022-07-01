@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c60c4bcab1ec6f4492a3c2a630e7ce2, type: 3}
-  m_Name: Baptismal Invitation
+  m_Script: {fileID: 11500000, guid: e871f23098b43f5488d2396c41a3d494, type: 3}
+  m_Name: Gospel
   m_EditorClassIdentifier: 
-  category: {fileID: 11400000, guid: 1604af19c66fbaf468017954aaaa09c3, type: 2}
+  category: {fileID: 11400000, guid: 33b559a9964baf449a059d64533333aa, type: 2}

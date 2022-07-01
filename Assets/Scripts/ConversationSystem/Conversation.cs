@@ -22,35 +22,53 @@ public class Conversation
     public void AddToConversation(Speech speech)
     {
         history.Add(speech);
-        if(speech.action.type.closedBy != null)
+
+        // handle the resolution stack
+        Speech stackSpeech = resolutionStack.Peek();
+        if(stackSpeech != null)
+        {
+            if (stackSpeech.action.type.closedBy == speech.action.type)
+            {
+                if(stackSpeech.speaker == speech.speaker && stackSpeech.action.type.closableBySelf)
+                {
+                    resolutionStack.Pop();
+                }
+                else if(stackSpeech.speaker != speech.speaker && stackSpeech.action.type.closableByOther)
+                {
+                    resolutionStack.Pop();
+                }
+            }
+        }
+
+
+        if (speech.action.type.closedBy != null)
         {
             resolutionStack.Push(speech);
         }
     }
 
-    private List<SpeechType> PossibleSpeechTypes()
+    private List<SpeechType> PossibleSpeechTypes(Person person)
     {
         // get possible speech types that can follow either
         // 1) most recent speech in the history, or
         // 2) most recent speech in the resolution stack
-        SpeechType latestInHistory = history.Last()?.action.type;
-        SpeechType latestInStack = resolutionStack.Peek()?.action.type;
+        Speech latestInHistory = history.Last();
+        Speech latestInStack = resolutionStack.Peek();
 
         if (latestInHistory == null) {
-            Debug.Log("returning starting type");
             return new List<SpeechType>() { startType };
         };
 
         HashSet<SpeechType> possibleTypes = new HashSet<SpeechType>();
-        foreach(Transition t in latestInHistory.transitions)
+        foreach (Transition t in latestInHistory.action.type.transitions)
         {
-            possibleTypes.Add(t.to);
+            if(t.fromHistory) possibleTypes.Add(t.to);
         }
         if(latestInStack != null)
         {
-            foreach (Transition t in latestInStack?.transitions)
+            foreach (Transition t in latestInHistory.action.type.transitions)
             {
-                possibleTypes.Add(t.to);
+                if(t.fromStack) possibleTypes.Add(t.to);
             }
         }
 
@@ -59,20 +77,16 @@ public class Conversation
 
     public List<SpeechAction> PossibleActions(Person person)
     {
-        List<SpeechType> possibleTypes = PossibleSpeechTypes();
-        Debug.Log("possible types: " + possibleTypes.Count);
+        List<SpeechType> possibleTypes = PossibleSpeechTypes(person);
         List<AbstractStat> personStats = person.stats.Select(s => s.abstractStat).ToList();
 
         List<SpeechAction> allActions = FindAllSpeechActions();
-        Debug.Log("all actions: " + allActions.Count);
 
         // filter by type
         List<SpeechAction> possibleActions = allActions
             .Where(a => possibleTypes.Contains(a.type))
-            .Where(a => a.IsValidFor(person))
+            .Where(a => a.IsValidFor(person, resolutionStack.Peek()))
             .ToList();
-
-        Debug.Log("possible actions: " + possibleActions.Count);
 
         return possibleActions;
     }
@@ -85,7 +99,6 @@ public class Conversation
     {
         List<SpeechType> types = new List<SpeechType>();
         string[] assetNames = AssetDatabase.FindAssets("t:SpeechType");
-        Debug.Log("Speech type asset strings: " + assetNames.Length);
         foreach (string SOName in assetNames)
         {
             var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
@@ -100,7 +113,6 @@ public class Conversation
     {
         List<SpeechAction> actions = new List<SpeechAction>();
         string[] assetNames = AssetDatabase.FindAssets("t:SpeechAction");
-        Debug.Log("SpeechAction asset names: " + assetNames.Length);
         foreach (string SOName in assetNames)
         {
             var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
@@ -108,5 +120,31 @@ public class Conversation
             actions.Add(action);
         }
         return actions;
+    }
+
+    public static List<TopicSubcategory> FindAllTopicSubcategories()
+    {
+        List<TopicSubcategory> scs = new List<TopicSubcategory>();
+        string[] assetNames = AssetDatabase.FindAssets("t:TopicSubcategory");
+        foreach (string SOName in assetNames)
+        {
+            var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
+            TopicSubcategory sc = AssetDatabase.LoadAssetAtPath<TopicSubcategory>(SOpath);
+            scs.Add(sc);
+        }
+        return scs;
+    }
+
+    public static List<Topic> FindAllTopics()
+    {
+        List<Topic> topics = new List<Topic>();
+        string[] assetNames = AssetDatabase.FindAssets("t:Topic");
+        foreach (string SOName in assetNames)
+        {
+            var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
+            Topic t = AssetDatabase.LoadAssetAtPath<Topic>(SOpath);
+            topics.Add(t);
+        }
+        return topics;
     }
 }

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 7fd357d658ad78043a8e8fccf3419955, type: 2}
   topic: {fileID: 11400000, guid: de76f778710fc574f8e6b391f4b0a55e, type: 2}
-  title: Compliment the other person's shoes
-  description: They honestly look pretty cool.
+  title: Compliment the other person
+  description: They deserve it
+  prereqs: []

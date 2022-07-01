@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5340148354160704412}
   - component: {fileID: 5340148354160704415}
   - component: {fileID: 1960331493683073347}
+  - component: {fileID: -3680369093227442798}
   m_Layer: 5
   m_Name: SpeechHistory
   m_TagString: Untagged
@@ -124,6 +125,26 @@ MonoBehaviour:
   actionTitle: {fileID: 5340148355344118003}
   speechType: {fileID: 5340148355755984404}
   topic: {fileID: 5340148355901776782}
+--- !u!114 &-3680369093227442798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5340148354160704409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: 60
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5340148354958294772
 GameObject:
   m_ObjectHideFlags: 0

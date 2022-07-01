@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90f656bbf80048e4ebc0bc5e9653dcee, type: 3}
-  m_Name: Stupid
+  m_Script: {fileID: 11500000, guid: e871f23098b43f5488d2396c41a3d494, type: 3}
+  m_Name: General
   m_EditorClassIdentifier: 
-  type: {fileID: 11400000, guid: 1c5edf1b7958a1b4bbcc385aa7bc751c, type: 2}
-  topic: {fileID: 0}
-  title: Check your phone
-  description: Confusion tactics
-  prereqs: []
+  category: {fileID: 11400000, guid: c1d3a150587c13243a04d0c63a6fb934, type: 2}
