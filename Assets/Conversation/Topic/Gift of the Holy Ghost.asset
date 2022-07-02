@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c60c4bcab1ec6f4492a3c2a630e7ce2, type: 3}
-  m_Name: Baptism
+  m_Name: Gift of the Holy Ghost
   m_EditorClassIdentifier: 
   category: {fileID: 11400000, guid: 33b559a9964baf449a059d64533333aa, type: 2}
   believedBy:
   - {fileID: 11400000, guid: 5f25c6303f185e34ea9afcea95d02881, type: 2}
   - {fileID: 11400000, guid: db59f749bffb779419700723d268dddc, type: 2}
   influencedBy:
-  - backgroundInfo: {fileID: 11400000, guid: db313a0859a53eb42a180d73feea5aab, type: 2}
-    weight: 1.5
+  - backgroundInfo: {fileID: 11400000, guid: 3218f2c6b517f6742b814159c2bc98b8, type: 2}
+    weight: -0.5
   - backgroundInfo: {fileID: 11400000, guid: f44eac7e2db41ed4dadcfedeaf325535, type: 2}
-    weight: 0.3
-  - backgroundInfo: {fileID: 11400000, guid: 35dc673f595ccbc4380bc4aac5786246, type: 2}
-    weight: 0.8
+    weight: 0.5
+  - backgroundInfo: {fileID: 11400000, guid: db313a0859a53eb42a180d73feea5aab, type: 2}
+    weight: 0.25

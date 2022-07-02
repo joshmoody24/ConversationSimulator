@@ -9,8 +9,7 @@ public class Speech
     public SpeechAction action;
     public Topic topic;
     public Person speaker;
-    public List<Person> receivers;
-    public List<Person> closeableBy;
+    public Person receiver;
     public UnityAction onResolve;
     
     public void OnResolve(UnityAction action)
@@ -23,24 +22,11 @@ public class Speech
         onResolve.Invoke();
     }
 
-    public Speech(SpeechAction action, Person speaker, List<Person> receivers, Topic topic = null, List<Person> closeableBy = null)
+    public Speech(SpeechAction action, Person speaker, Person receiver, Topic topic)
     {
         this.action = action;
         this.speaker = speaker;
-        this.receivers = receivers;
+        this.receiver = receiver;
         this.topic = topic;
-        if (closeableBy == null)
-        {
-            closeableBy = new List<Person>();
-            if (action.type.closableByOther)
-            {
-                closeableBy.AddRange(receivers);
-            }
-            if(action.type.closableBySelf)
-            {
-                closeableBy.Add(speaker);
-            }
-        }
-        this.closeableBy = closeableBy;
     }
 }

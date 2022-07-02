@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90f656bbf80048e4ebc0bc5e9653dcee, type: 3}
-  m_Name: Normal Question
+  m_Script: {fileID: 11500000, guid: e981c72d788913644a4dc9794e69635a, type: 3}
+  m_Name: Jewish
   m_EditorClassIdentifier: 
-  type: {fileID: 11400000, guid: f72c8a443b94079469feff6a5f92e934, type: 2}
-  title: Ask an basic question
-  description: 'Ask a '
-  prereqs: []
-  effects: []
+  numberOfFollowers: 10
+  chanceOfLeaving: 0.2

@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 public class HistorySpeechUI : MonoBehaviour
 {
-    public TextMeshProUGUI personName;
-    public TextMeshProUGUI actionTitle;
-    public TextMeshProUGUI speechType;
-    public TextMeshProUGUI topic;
+    public Text personName;
+    public Text actionTitle;
+    public Text speechType;
+    public Text topic;
 
     public void SetValues(Speech speech)
     {
         if(speech == null) return;
-        this.personName.SetText(speech.speaker.firstName);
-        this.actionTitle.SetText(speech.action.title);
-        this.speechType.SetText(speech.action.type.name);
-        this.topic.SetText(speech.topic?.name ?? "No Topic");
+        this.personName.text = speech.speaker.firstName;
+        this.actionTitle.text = speech.action.title;
+        this.speechType.text = speech.action.type.name;
+        this.topic.text = speech.topic?.name ?? "No Topic";//
     }
 }

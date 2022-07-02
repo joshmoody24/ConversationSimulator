@@ -7,4 +7,10 @@ public class Knowledge
 {
     public float amount;
     public Topic topic;
+
+    public Knowledge(Topic topic, float amount)
+    {
+        this.amount = amount;
+        this.topic = topic;
+    }
 }

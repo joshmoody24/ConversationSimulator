@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90f656bbf80048e4ebc0bc5e9653dcee, type: 3}
-  m_Name: Normal Question
+  m_Name: Detailed
   m_EditorClassIdentifier: 
-  type: {fileID: 11400000, guid: f72c8a443b94079469feff6a5f92e934, type: 2}
-  title: Ask an basic question
-  description: 'Ask a '
+  type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
+  topic: {fileID: 0}
+  title: Share a personal experience
+  description: Hopefully it answers their question
+  knowledgeThreshold: 0.1
   prereqs: []
   effects: []

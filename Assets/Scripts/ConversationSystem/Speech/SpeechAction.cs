@@ -9,11 +9,10 @@ public class SpeechAction : ScriptableObject
     public string title;
     [TextArea(5, 10)]
     public string description;
-    public float knowledgeThreshold = 0f;
     public List<SpeechPrereq> prereqs;
     public List<SpeechEffect> effects;
 
-    public bool IsValidFor(Person person, Speech latestOnStack)
+    public bool IsValidFor(Person person)
     {
         // check prereqs
         foreach(SpeechPrereq p in prereqs)
@@ -21,13 +20,6 @@ public class SpeechAction : ScriptableObject
             if (p.Validate(person) == false) return false;
         }
 
-        // check if closable
-        SpeechType stackType = latestOnStack?.action.type;
-        if (stackType?.closedBy == type)
-        {
-            if (stackType.closableBySelf == false && latestOnStack.speaker == person) return false;
-            if (stackType.closableByOther == false && latestOnStack.speaker != person) return false;
-        }
         return true;
     }
 }
