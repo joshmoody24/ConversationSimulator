@@ -17,7 +17,10 @@ public class Person : MonoBehaviour
     {
         Knowledge k = knowledge.FirstOrDefault(k => k.topic == topic);
         if (k == null) return false;
-        else return k.amount >= threshold;
+        else {
+            Debug.Log(k.topic.name + " against " + firstName + " " + k.amount + " >= " + threshold + " " + (k.amount >= threshold));
+            return k.amount >= threshold;
+        }
     }
 
     // Start is called before the first frame update

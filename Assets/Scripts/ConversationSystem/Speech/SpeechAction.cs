@@ -6,8 +6,6 @@ using UnityEngine;
 public class SpeechAction : ScriptableObject
 {
     public SpeechType type;
-    // if topic is null, it can be dynamically chosen
-    public Topic topic;
     public string title;
     [TextArea(5, 10)]
     public string description;

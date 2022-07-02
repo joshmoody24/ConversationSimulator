@@ -11,6 +11,7 @@ public class SpeechType : ScriptableObject
     public bool closableBySelf;
     public bool closableByOther;
     public bool changesTopic = false;
+    public bool overrideStack = false;
     public List<Transition> transitions;
 }
 

@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: Doctrine
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
-  topic: {fileID: 0}
   title: 'Drop some FIERY doctrine on that question '
   description: 'True doctrine, understood, changes actions and behavior.
 
     - PMG
     something something'
+  knowledgeThreshold: 0.8
+  prereqs:
+  - abstractStat: {fileID: 11400000, guid: c989ab1e847025143bf539e2744d1ff9, type: 2}
+    threshold: 0
+    comparisonType: 1
+  effects: []

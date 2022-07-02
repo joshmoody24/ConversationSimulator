@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f656bbf80048e4ebc0bc5e9653dcee, type: 3}
   m_Name: Personal Story
   m_EditorClassIdentifier: 
-  type: {fileID: 11400000, guid: 7fd357d658ad78043a8e8fccf3419955, type: 2}
+  type: {fileID: 11400000, guid: 7993b4442a83cc243bc78e78ca321685, type: 2}
   topic: {fileID: 0}
   title: Share a personal experience
   description: From before the mission? From a couple days ago? Your call.
+  knowledgeThreshold: 0.2
+  prereqs: []
+  effects: []

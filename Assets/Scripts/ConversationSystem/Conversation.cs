@@ -21,8 +21,6 @@ public class Conversation
 
     public void AddToConversation(Speech speech)
     {
-        history.Add(speech);
-
         // handle the resolution stack
         Speech stackSpeech = resolutionStack.Peek();
         if(stackSpeech != null)
@@ -32,10 +30,12 @@ public class Conversation
                 if(stackSpeech.speaker == speech.speaker && stackSpeech.action.type.closableBySelf)
                 {
                     resolutionStack.Pop();
+                    speech.topic = CurrentTopic();
                 }
                 else if(stackSpeech.speaker != speech.speaker && stackSpeech.action.type.closableByOther)
                 {
                     resolutionStack.Pop();
+                    speech.topic = CurrentTopic();
                 }
             }
         }
@@ -45,9 +45,11 @@ public class Conversation
         {
             resolutionStack.Push(speech);
         }
+
+        history.Add(speech);
     }
 
-    private List<SpeechType> PossibleSpeechTypes(Person person)
+    private List<SpeechType> GrammaticallyCorrectSpeechTypes(Person person)
     {
         // get possible speech types that can follow either
         // 1) most recent speech in the history, or
@@ -64,20 +66,32 @@ public class Conversation
         {
             if(t.fromHistory) possibleTypes.Add(t.to);
         }
-        if(latestInStack != null)
+        if(latestInStack != null && latestInHistory.action.type.overrideStack == false)
         {
-            foreach (Transition t in latestInHistory.action.type.transitions)
+            foreach (Transition t in latestInStack.action.type.transitions)
             {
                 if(t.fromStack) possibleTypes.Add(t.to);
             }
         }
 
+        // handle closeables
+        if(latestInStack?.closeableBy.Contains(person) == false)
+        {
+            possibleTypes.Remove(latestInStack.action.type.closedBy);
+        }
+
+
         return possibleTypes.ToList();
     }
 
-    public List<SpeechAction> PossibleActions(Person person)
+    public Topic CurrentTopic()
     {
-        List<SpeechType> possibleTypes = PossibleSpeechTypes(person);
+        return resolutionStack.Peek()?.topic;
+    }
+
+    public List<SpeechAction> GrammaticallyCorrectActions(Person person)
+    {
+        List<SpeechType> possibleTypes = GrammaticallyCorrectSpeechTypes(person);
         List<AbstractStat> personStats = person.stats.Select(s => s.abstractStat).ToList();
 
         List<SpeechAction> allActions = FindAllSpeechActions();
@@ -85,7 +99,6 @@ public class Conversation
         // filter by type
         List<SpeechAction> possibleActions = allActions
             .Where(a => possibleTypes.Contains(a.type))
-            .Where(a => a.IsValidFor(person, resolutionStack.Peek()))
             .ToList();
 
         return possibleActions;

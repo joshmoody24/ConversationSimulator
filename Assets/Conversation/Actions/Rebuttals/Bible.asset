@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Bible
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: a6f584415a5c8434e881aa7cbf5a24ba, type: 2}
-  topic: {fileID: 0}
   title: Appeal to the Bible
   description: Get some doctrine to back you up
+  knowledgeThreshold: 0.6
   prereqs: []
+  effects: []

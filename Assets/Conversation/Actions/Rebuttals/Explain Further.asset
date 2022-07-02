@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Explain Further
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: a6f584415a5c8434e881aa7cbf5a24ba, type: 2}
-  topic: {fileID: 0}
   title: Explain Further
   description: 'Add some more to what you just said
 
 '
+  knowledgeThreshold: 0.7
   prereqs: []
+  effects: []

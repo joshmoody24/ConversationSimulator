@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Invitation 2
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 65a3de55bff54c7459d532caa45e18f3, type: 2}
-  topic: {fileID: 0}
   title: Boldly call them to repentance
   description: Make sure they know how important it is
+  knowledgeThreshold: 0.6
+  prereqs: []
+  effects: []

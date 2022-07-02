@@ -15,9 +15,20 @@ MonoBehaviour:
   closedBy: {fileID: 0}
   closableBySelf: 0
   closableByOther: 0
+  changesTopic: 0
   transitions:
   - to: {fileID: 11400000, guid: 65a3de55bff54c7459d532caa45e18f3, type: 2}
+    fromHistory: 1
+    fromStack: 1
   - to: {fileID: 11400000, guid: 1c5edf1b7958a1b4bbcc385aa7bc751c, type: 2}
+    fromHistory: 1
+    fromStack: 1
   - to: {fileID: 11400000, guid: f72c8a443b94079469feff6a5f92e934, type: 2}
+    fromHistory: 1
+    fromStack: 1
   - to: {fileID: 11400000, guid: 2e75a01c7e1d74d4c8d79d409467dee6, type: 2}
+    fromHistory: 1
+    fromStack: 1
   - to: {fileID: 11400000, guid: 7fd357d658ad78043a8e8fccf3419955, type: 2}
+    fromHistory: 1
+    fromStack: 1

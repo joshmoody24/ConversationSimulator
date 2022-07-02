@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Invitation 1
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 65a3de55bff54c7459d532caa45e18f3, type: 2}
-  topic: {fileID: 0}
   title: Extend an invitation
   description: Classic "will you" style and all that chapter 11 stuff.
+  knowledgeThreshold: 0.3
+  prereqs: []
+  effects: []

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Invitation 3
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 65a3de55bff54c7459d532caa45e18f3, type: 2}
-  topic: {fileID: 0}
   title: Gently suggest a course of action
   description: Sometimes a gentle hand is necessary
+  knowledgeThreshold: 0.1
+  prereqs: []
+  effects: []

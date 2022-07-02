@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Clarify
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: a6f584415a5c8434e881aa7cbf5a24ba, type: 2}
-  topic: {fileID: 0}
   title: Clarify the previous point
   description: Perhaps you didn't explain yourself properly
+  knowledgeThreshold: 0.3
   prereqs: []
+  effects: []

@@ -12,9 +12,11 @@ public class ConversationUI : MonoBehaviour
     public GameObject buttonPrefab;
     public Transform buttonParent;
     public Button backButton;
+    public TMP_Dropdown topicFilter;
     public Transform historyParent;
     public GameObject historySpeechPrefab;
     public Transform stackParent;
+    public TextMeshProUGUI actionScreenTitle;
 
     private ConversationManager manager;
 
@@ -22,8 +24,6 @@ public class ConversationUI : MonoBehaviour
     private TopicSubcategory subcategory;
     private Topic topic;
     private Person person;
-
-    private UnityAction onBack = null;
 
     public void SetManager(ConversationManager manager)
     {
@@ -33,9 +33,19 @@ public class ConversationUI : MonoBehaviour
 
     public void Start()
     {
-        // initialize back button eventually
         RestartTurn();
-        backButton.onClick.AddListener(onBack);
+
+        // set up category filter
+        List<TopicSubcategory> subcategories = Conversation.FindAllTopicSubcategories();
+        topicFilter.ClearOptions();
+        List<string> options = new List<string>() { "All Categories" };
+        options.AddRange(subcategories.Select(sc => sc.name).ToList());
+        topicFilter.AddOptions(options);
+        topicFilter.onValueChanged.AddListener((value) => {
+            Debug.Log(topicFilter.value);
+            TopicSubcategory selected = subcategories.FirstOrDefault(sc => sc.name == topicFilter.options[value].text);
+            FilterBySubcategory(selected);
+        });
     }
 
     public void RestartTurn()
@@ -43,6 +53,7 @@ public class ConversationUI : MonoBehaviour
         type = null;
         subcategory = null;
         topic = null;
+        actionScreenTitle.SetText("");
     }
 
     public void StartTurn(Person person)
@@ -51,13 +62,13 @@ public class ConversationUI : MonoBehaviour
         PopulateWithTypes();
     }
 
-    public void EndTurn(SpeechAction action)
+    public void EndTurn(SpeechAction action, Topic topic)
     {
+        manager.EndPlayerTurn(action, topic);
         type = null;
         subcategory = null;
-        topic = null;
+        this.topic = null;
         person = null;
-        manager.EndPlayerTurn(action);
     }
 
     public void UpdateStack(Speech latest)
@@ -86,7 +97,7 @@ public class ConversationUI : MonoBehaviour
         this.type = type;
         if (type.changesTopic)
         {
-            PopulateWithSubcategories();
+            PopulateWithTopics();
         }
         else
         {
@@ -119,7 +130,11 @@ public class ConversationUI : MonoBehaviour
     {
         ClearButtons();
         backButton.interactable = false;
-        onBack = null;
+        backButton.onClick.RemoveAllListeners();
+
+        actionScreenTitle.SetText("What action?");
+
+        topicFilter.gameObject.SetActive(false);
 
         List<SpeechType> allTypes = Conversation.FindAllSpeechActions()
             .Select(a => a.type)
@@ -145,37 +160,22 @@ public class ConversationUI : MonoBehaviour
 
     public void PopulateWithActions()
     {
+        actionScreenTitle.SetText("In what style?");
         ClearButtons();
 
         backButton.interactable = true;
-        onBack = topic == null ? () => PopulateWithTypes() : () => PopulateWithTopics();
+        backButton.onClick.RemoveAllListeners();
+        backButton.onClick.AddListener(topic == null ? () => PopulateWithTypes() : () => PopulateWithTopics());
 
-        List<SpeechAction> possibleActions = manager.conversation.PossibleActions(person)
+        topicFilter.gameObject.SetActive(false);
+
+        List<SpeechAction> possibleActions = manager.conversation.GrammaticallyCorrectActions(person)
             .Where(a => a.type == type)
             .ToList();
 
         foreach (SpeechAction a in possibleActions)
         {
-            SpawnButton(a.title, () => EndTurn(a), IsUsable(a, topic));
-        }
-    }
-
-    public void PopulateWithSubcategories()
-    {
-        ClearButtons();
-
-        backButton.interactable = true;
-        onBack = () => PopulateWithTypes();
-
-        List<Topic> allTopics = Conversation.FindAllTopics();
-        List<TopicSubcategory> allSubcategories = allTopics
-            .Select(t => t.subcategory)
-            .Distinct()
-            .ToList();
-
-        foreach (TopicSubcategory sc in allSubcategories)
-        {
-            SpawnButton(sc.name, () => SelectSubcategory(sc), IsUsable(sc) ); // previsouly 'usable'
+            SpawnButton(a.title, () => EndTurn(a, topic), IsUsable(a, topic));
         }
     }
 
@@ -183,12 +183,17 @@ public class ConversationUI : MonoBehaviour
     {
         ClearButtons();
 
+        actionScreenTitle.SetText("What about?");
+
         backButton.interactable = true;
-        onBack = () => PopulateWithSubcategories();
+        backButton.onClick.RemoveAllListeners();
+        backButton.onClick.AddListener(() => PopulateWithTypes());
 
         List<Topic> topics = Conversation.FindAllTopics()
-            .Where(t => t.subcategory == subcategory)
+            .Where(t => t.subcategory == subcategory || subcategory == null)
             .ToList();
+
+        topicFilter.gameObject.SetActive(true);
 
         foreach (Topic t in topics)
         {
@@ -196,17 +201,15 @@ public class ConversationUI : MonoBehaviour
         }
     }
 
-    private bool IsUsable(TopicSubcategory sc)
+    public void FilterBySubcategory(TopicSubcategory subcategory)
     {
-        List<Topic> allTopics = Conversation.FindAllTopics();
-        List<Topic> topicsInSC = allTopics.Where(t => t.subcategory == sc).ToList();
-        bool usable = topicsInSC.Where(t => IsUsable(t)).Count() > 0;
-        return usable;
+        this.subcategory = subcategory;
+        PopulateWithTopics();
     }
 
     private bool IsUsable(SpeechType type)
     {
-        List<SpeechType> possibleTypes = manager.conversation.PossibleActions(person)
+        List<SpeechType> possibleTypes = manager.conversation.GrammaticallyCorrectActions(person)
              .Select(a => a.type)
              .Distinct()
              .ToList();
@@ -216,17 +219,17 @@ public class ConversationUI : MonoBehaviour
 
     private bool IsUsable(SpeechAction action, Topic topic)
     {
+        Debug.Log(action?.title + ", " + topic?.name);
+        if (topic == null) topic = manager.conversation.CurrentTopic();
         bool usable = person.TestKnowledge(topic, action.knowledgeThreshold) || action.knowledgeThreshold == 0 || topic == null;
-        if (type != null) Debug.Log(action.title + " " + topic?.name + " = " + usable );
         return usable;
     }
 
     private bool IsUsable(Topic topic)
     {
-        bool usable = manager.conversation.PossibleActions(person)
+        bool usable = manager.conversation.GrammaticallyCorrectActions(person)
             .Where(a => a.type == type || type == null)
             .Where(a => IsUsable(a, topic)).Count() > 0;
-        Debug.Log(usable);
         return usable;
     }
 }

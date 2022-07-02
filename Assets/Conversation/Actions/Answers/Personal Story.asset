@@ -16,3 +16,6 @@ MonoBehaviour:
   topic: {fileID: 0}
   title: Share a personal experience
   description: Hopefully it answers their question
+  knowledgeThreshold: 0.1
+  prereqs: []
+  effects: []

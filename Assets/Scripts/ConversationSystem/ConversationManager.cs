@@ -30,8 +30,8 @@ public class ConversationManager : MonoBehaviour
         List<Topic> allTopics = Conversation.FindAllTopics();
         foreach(Topic t in allTopics)
         {
-            player.knowledge.Add(new Knowledge { topic = t, amount = 0.5f });
-            npc.knowledge.Add(new Knowledge { topic = t, amount = 0.5f });
+            player.knowledge.Add(new Knowledge { topic = t, amount = Random.Range(0f,1f) });
+            npc.knowledge.Add(new Knowledge { topic = t, amount = Random.Range(0f,1f)});
         }
 
         ui.SetManager(this);
@@ -48,20 +48,21 @@ public class ConversationManager : MonoBehaviour
     public void BeginPlayerTurn()
     {
         ui.playerControls.SetActive(true);
-        List<SpeechAction> actions = conversation.PossibleActions(player);
+        List<SpeechAction> actions = conversation.GrammaticallyCorrectActions(player);
         ui.StartTurn(player);
     }
 
-    public void EndPlayerTurn(SpeechAction action)
+    public void EndPlayerTurn(SpeechAction action, Topic topic)
     {
-        AddToConversation(action, activePerson, new List<Person>() { npc });
+        AddToConversation(action, activePerson, new List<Person>() { npc }, topic);
         ui.playerControls.SetActive(false);
         activePerson = npc;
         StartCoroutine(npcTurn());
     }
 
-    public void AddToConversation(SpeechAction action, Person person, List<Person> receivers, Topic topic = null)
+    public void AddToConversation(SpeechAction action, Person person, List<Person> receivers, Topic topic)
     {
+        if (topic == null) topic = conversation.history.Last()?.topic;
         Speech newSpeech = new Speech(action, person, receivers, topic);
         conversation.AddToConversation(newSpeech);
         ui.AddToConversation(newSpeech);
@@ -71,13 +72,22 @@ public class ConversationManager : MonoBehaviour
     IEnumerator npcTurn()
     {
         yield return new WaitForSeconds(npcDelay);
-        List<SpeechAction> possibleActions = conversation.PossibleActions(npc);
+
+        List<Topic> possibleTopics = npc.knowledge.Select(k => k.topic).Distinct().ToList();
+        Topic selectedTopic = null;
+        if(possibleTopics.Count != 0) selectedTopic = possibleTopics[Random.Range(0, possibleTopics.Count)];
+
+        List<SpeechAction> possibleActions = conversation.GrammaticallyCorrectActions(npc);
+        SpeechAction selectedAction;
         if (possibleActions.Count != 0)
         {
             int randomIndex = Random.Range(0, possibleActions.Count);
-            SpeechAction action = possibleActions[randomIndex];
-            AddToConversation(action, npc, new List<Person>() { player });
+            selectedAction = possibleActions[randomIndex];
+            Topic actualTopic = selectedAction.type.changesTopic ? selectedTopic : null;
+            Debug.Log(actualTopic?.name);
+            AddToConversation(selectedAction, npc, new List<Person>() { player }, actualTopic);
         }
+
         activePerson = player;
         BeginPlayerTurn();
     }

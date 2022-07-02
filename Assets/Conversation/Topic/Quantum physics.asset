@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9d1d457bcd6c1e438867d027c79f979, type: 3}
-  m_Name: Closing
+  m_Script: {fileID: 11500000, guid: 8c60c4bcab1ec6f4492a3c2a630e7ce2, type: 3}
+  m_Name: Quantum physics
   m_EditorClassIdentifier: 
-  closedBy: {fileID: 0}
-  closableBySelf: 0
-  closableByOther: 0
-  changesTopic: 0
-  overrideStack: 1
-  transitions: []
+  subcategory: {fileID: 11400000, guid: 03f62235f2a7c1f4ca077bcefa0ff565, type: 2}
+  abstractCommitment: {fileID: 0}

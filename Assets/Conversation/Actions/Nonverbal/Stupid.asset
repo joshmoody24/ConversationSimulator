@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 1c5edf1b7958a1b4bbcc385aa7bc751c, type: 2}
   topic: {fileID: 0}
-  title: Check your phone
+  title: Check phone
   description: Confusion tactics
+  knowledgeThreshold: 0
   prereqs: []
+  effects: []

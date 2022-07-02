@@ -16,6 +16,6 @@ public class HistorySpeechUI : MonoBehaviour
         this.personName.SetText(speech.speaker.firstName);
         this.actionTitle.SetText(speech.action.title);
         this.speechType.SetText(speech.action.type.name);
-        this.topic.SetText(speech.action.topic?.name ?? "[]");
+        this.topic.SetText(speech.topic?.name ?? "No Topic");
     }
 }

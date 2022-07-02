@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: Share Scripture
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
-  topic: {fileID: 0}
   title: Share a scripture
   description: The scriptures have all the answers
+  knowledgeThreshold: 0.4
+  prereqs:
+  - abstractStat: {fileID: 11400000, guid: c989ab1e847025143bf539e2744d1ff9, type: 2}
+    threshold: 0.4
+    comparisonType: 1
+  effects: []

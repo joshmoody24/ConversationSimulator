@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Concern
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: b74c1689441f5b84bb73282e034c4802, type: 2}
-  topic: {fileID: 0}
   title: Raise a concern
   description: You're worried about something
+  knowledgeThreshold: 0.1
+  prereqs: []
+  effects: []

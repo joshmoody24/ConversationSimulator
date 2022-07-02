@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90f656bbf80048e4ebc0bc5e9653dcee, type: 3}
-  m_Name: Logic
+  m_Name: Improv
   m_EditorClassIdentifier: 
-  type: {fileID: 11400000, guid: b74c1689441f5b84bb73282e034c4802, type: 2}
-  title: Point out a flaw in their reasoning
-  description: This ain't adding up
-  knowledgeThreshold: 0.6
+  type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
+  topic: {fileID: 0}
+  title: Improv a half-baked answer
+  description: Hopefully it answers their question
+  knowledgeThreshold: 0
   prereqs: []
   effects: []
