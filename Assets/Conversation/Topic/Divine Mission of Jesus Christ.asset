@@ -19,3 +19,5 @@ MonoBehaviour:
   influencedBy:
   - backgroundInfo: {fileID: 11400000, guid: f44eac7e2db41ed4dadcfedeaf325535, type: 2}
     weight: 1
+  - backgroundInfo: {fileID: 11400000, guid: 13ef20264d19ce248b8c55c95a43dcf3, type: 2}
+    weight: 2

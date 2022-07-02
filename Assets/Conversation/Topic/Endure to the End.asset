@@ -18,4 +18,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5f25c6303f185e34ea9afcea95d02881, type: 2}
   - {fileID: 11400000, guid: d8330132ae2b78b4a8688a34f0943c0f, type: 2}
   - {fileID: 11400000, guid: 162af1489f7f0464997a6cef95c9067d, type: 2}
-  influencedBy: []
+  influencedBy:
+  - backgroundInfo: {fileID: 11400000, guid: 13ef20264d19ce248b8c55c95a43dcf3, type: 2}
+    weight: 0.1

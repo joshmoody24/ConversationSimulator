@@ -23,3 +23,5 @@ MonoBehaviour:
     weight: 0.3
   - backgroundInfo: {fileID: 11400000, guid: 35dc673f595ccbc4380bc4aac5786246, type: 2}
     weight: 0.8
+  - backgroundInfo: {fileID: 11400000, guid: 13ef20264d19ce248b8c55c95a43dcf3, type: 2}
+    weight: 0.7

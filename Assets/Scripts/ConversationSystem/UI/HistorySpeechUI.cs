@@ -7,7 +7,7 @@ public class HistorySpeechUI : MonoBehaviour
 {
     public Text personName;
     public Text actionTitle;
-    public Text speechType;
+    public Text data;
     public Text topic;
 
     public void SetValues(Speech speech)
@@ -15,7 +15,7 @@ public class HistorySpeechUI : MonoBehaviour
         if(speech == null) return;
         this.personName.text = speech.speaker.firstName;
         this.actionTitle.text = speech.action.title;
-        this.speechType.text = speech.action.type.name;
+        this.data.text = speech.data;
         this.topic.text = speech.topic?.name ?? "No Topic";//
     }
 }

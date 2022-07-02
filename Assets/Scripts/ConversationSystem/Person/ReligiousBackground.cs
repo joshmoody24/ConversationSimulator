@@ -32,6 +32,8 @@ public class ReligiousBackground
         {
             currentReligion = raisedReligion;
         }
+        raisedReligionIntensity = Random.Range(0f, Person.MAX_KNOWLEDGE);
+        currentReligionIntensity = Random.Range(0f, Person.MAX_KNOWLEDGE);
     }
 
     Religion RandomReligionWeighted(List<Religion> religions)

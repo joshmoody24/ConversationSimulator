@@ -43,11 +43,6 @@ public class Conversation
         return possibleTypes.ToList();
     }
 
-    public Topic CurrentTopic()
-    {
-        return history.Last()?.topic;
-    }
-
     public List<SpeechAction> GrammaticallyCorrectActions(Person person)
     {
         List<SpeechType> possibleTypes = GrammaticallyCorrectSpeechTypes(person);

@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   personName: {fileID: 6809476831141953234}
   actionTitle: {fileID: 3779023219189952682}
-  speechType: {fileID: 590335448377158412}
+  data: {fileID: 590335448377158412}
   topic: {fileID: 225668846667643133}
 --- !u!114 &-3680369093227442798
 MonoBehaviour:
@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 5340148355755984405}
   - component: {fileID: 590335448377158412}
   m_Layer: 5
-  m_Name: Type
+  m_Name: Data
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

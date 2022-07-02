@@ -47,10 +47,23 @@ public class ConversationManager : MonoBehaviour
         StartCoroutine(npcTurn());
     }
 
-    public void AddToConversation(SpeechAction action, Person person, Person receiver, Topic topic)
+    public void AddToConversation(SpeechAction action, Person speaker, Person receiver, Topic topic)
     {
+        if (topic == null) topic = conversation.history.LastOrDefault().topic;
+        Speech newSpeech = new Speech(action, speaker, receiver, topic);
+
+        // if this is an answer to a question
+        if (action.type.name == "Response")
+        {
+            float knowledgeOfTopic = speaker.knowledge.First(k => k.topic == topic).amount;
+            string[] responses = { "None", "Tiny bit", "Medium amount", "Good amount", "A lot", "Everything" };
+            newSpeech.data = responses[Mathf.FloorToInt(knowledgeOfTopic)];
+        }
+        else
+        {
+            newSpeech.data = "?";
+        }
         if (topic == null) topic = conversation.history.Last()?.topic;
-        Speech newSpeech = new Speech(action, person, receiver, topic);
         conversation.AddToConversation(newSpeech);
         ui.AddToConversation(newSpeech);
     }
@@ -68,7 +81,7 @@ public class ConversationManager : MonoBehaviour
         {
             int randomIndex = Random.Range(0, possibleActions.Count);
             selectedAction = possibleActions[randomIndex];
-            AddToConversation(selectedAction, npc, player, selectedTopic);
+            AddToConversation(selectedAction, npc, player, selectedAction.type.name == "Response" ? null : selectedTopic);
         }
 
         BeginPlayerTurn();

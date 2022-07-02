@@ -2934,7 +2934,7 @@ MonoBehaviour:
   conversation:
     history: []
   npcDelay: 1
-  startingSpeechType: {fileID: 11400000, guid: 2b1db19ce0111164ab9fe43f8563d0aa, type: 2}
+  startingSpeechType: {fileID: 11400000, guid: f72c8a443b94079469feff6a5f92e934, type: 2}
   ui: {fileID: 537773001}
 --- !u!4 &1493135065
 Transform:

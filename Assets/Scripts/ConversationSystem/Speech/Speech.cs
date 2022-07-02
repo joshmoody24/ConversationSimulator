@@ -11,6 +11,7 @@ public class Speech
     public Person speaker;
     public Person receiver;
     public UnityAction onResolve;
+    public string data;
     
     public void OnResolve(UnityAction action)
     {
@@ -22,11 +23,12 @@ public class Speech
         onResolve.Invoke();
     }
 
-    public Speech(SpeechAction action, Person speaker, Person receiver, Topic topic)
+    public Speech(SpeechAction action, Person speaker, Person receiver, Topic topic, string data = "")
     {
         this.action = action;
         this.speaker = speaker;
         this.receiver = receiver;
         this.topic = topic;
+        this.data = data;
     }
 }
