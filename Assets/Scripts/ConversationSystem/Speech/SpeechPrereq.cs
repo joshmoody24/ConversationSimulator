@@ -10,7 +10,7 @@ public class SpeechPrereq
     public float threshold;
     public ComparisonType comparisonType = ComparisonType.GreaterThan;
 
-    public enum ComparisonType { LessThan, GreaterThan, EqualTo }
+    public enum ComparisonType {  GreaterThan, LessThan, EqualTo }
 
     public SpeechPrereq()
     {

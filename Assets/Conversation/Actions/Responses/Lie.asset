@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Lie
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
-  topic: {fileID: 0}
   title: Improv a half-baked answer
   description: Hopefully it answers their question
-  knowledgeThreshold: 0
-  prereqs: []
+  prereqs:
+  - abstractStat: {fileID: 11400000, guid: ee30a6055386bd940b837183fdbd4ddc, type: 2}
+    threshold: 2
+    comparisonType: 0
   effects: []

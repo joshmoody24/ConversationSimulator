@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90f656bbf80048e4ebc0bc5e9653dcee, type: 3}
-  m_Name: Normal
+  m_Name: Complex
   m_EditorClassIdentifier: 
-  type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
-  title: Give basic answer
-  description: The scriptures have all the answers
+  type: {fileID: 11400000, guid: 01a2508b2c0aff84daf3a785488401b6, type: 2}
+  title: Teach at an expert level
+  description: 
   prereqs:
   - abstractStat: {fileID: 11400000, guid: c989ab1e847025143bf539e2744d1ff9, type: 2}
-    threshold: 0.4
-    comparisonType: 1
+    threshold: 1
+    comparisonType: 0
   effects: []

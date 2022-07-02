@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: Vague
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
-  topic: {fileID: 0}
-  title: Improv a half-baked answer
+  title: Give vague answer
   description: Hopefully it answers their question
-  knowledgeThreshold: 0
   prereqs: []
   effects: []

@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: Detailed
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
-  topic: {fileID: 0}
-  title: Share a personal experience
+  title: Give detailed answer
   description: Hopefully it answers their question
-  knowledgeThreshold: 0.1
   prereqs: []
   effects: []

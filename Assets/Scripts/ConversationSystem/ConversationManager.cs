@@ -59,9 +59,13 @@ public class ConversationManager : MonoBehaviour
             string[] responses = { "None", "Tiny bit", "Medium amount", "Good amount", "A lot", "Everything" };
             newSpeech.data = responses[Mathf.FloorToInt(knowledgeOfTopic)];
         }
-        else
+        else if(action.type.name == "Question")
         {
             newSpeech.data = "?";
+        }
+        else
+        {
+            newSpeech.data = action.name;
         }
         if (topic == null) topic = conversation.history.Last()?.topic;
         conversation.AddToConversation(newSpeech);
