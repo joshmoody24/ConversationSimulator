@@ -84,7 +84,6 @@ public class ConversationManager : MonoBehaviour
             int randomIndex = Random.Range(0, possibleActions.Count);
             selectedAction = possibleActions[randomIndex];
             Topic actualTopic = selectedAction.type.changesTopic ? selectedTopic : null;
-            Debug.Log(actualTopic?.name);
             AddToConversation(selectedAction, npc, new List<Person>() { player }, actualTopic);
         }
 

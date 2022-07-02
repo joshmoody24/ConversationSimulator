@@ -99,6 +99,7 @@ public class Conversation
         // filter by type
         List<SpeechAction> possibleActions = allActions
             .Where(a => possibleTypes.Contains(a.type))
+            .Where(a => person.HasPrerequisiteStats(a))
             .ToList();
 
         return possibleActions;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stupid Question
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: f72c8a443b94079469feff6a5f92e934, type: 2}
-  title: Ask a thoughtful question
+  title: Ask a stupid question
   description: 'They exist
 
 '

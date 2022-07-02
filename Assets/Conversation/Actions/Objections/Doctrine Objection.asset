@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Doctrine Objection
   m_EditorClassIdentifier: 
   type: {fileID: 11400000, guid: b74c1689441f5b84bb73282e034c4802, type: 2}
-  title: You don't believe in that
+  title: Express different beliefs
   description: Not part of your belief system
   knowledgeThreshold: 0.2
   prereqs: []

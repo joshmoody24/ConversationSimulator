@@ -16,10 +16,8 @@ MonoBehaviour:
   closableBySelf: 0
   closableByOther: 1
   changesTopic: 1
+  overrideStack: 0
   transitions:
   - to: {fileID: 11400000, guid: 01cfa0c394a938f49bb303557f126960, type: 2}
-    fromHistory: 1
-    fromStack: 1
-  - to: {fileID: 11400000, guid: 2e75a01c7e1d74d4c8d79d409467dee6, type: 2}
     fromHistory: 1
     fromStack: 1

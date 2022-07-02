@@ -42,7 +42,6 @@ public class ConversationUI : MonoBehaviour
         options.AddRange(subcategories.Select(sc => sc.name).ToList());
         topicFilter.AddOptions(options);
         topicFilter.onValueChanged.AddListener((value) => {
-            Debug.Log(topicFilter.value);
             TopicSubcategory selected = subcategories.FirstOrDefault(sc => sc.name == topicFilter.options[value].text);
             FilterBySubcategory(selected);
         });
@@ -219,7 +218,6 @@ public class ConversationUI : MonoBehaviour
 
     private bool IsUsable(SpeechAction action, Topic topic)
     {
-        Debug.Log(action?.title + ", " + topic?.name);
         if (topic == null) topic = manager.conversation.CurrentTopic();
         bool usable = person.TestKnowledge(topic, action.knowledgeThreshold) || action.knowledgeThreshold == 0 || topic == null;
         return usable;

@@ -18,9 +18,18 @@ public class Person : MonoBehaviour
         Knowledge k = knowledge.FirstOrDefault(k => k.topic == topic);
         if (k == null) return false;
         else {
-            Debug.Log(k.topic.name + " against " + firstName + " " + k.amount + " >= " + threshold + " " + (k.amount >= threshold));
             return k.amount >= threshold;
         }
+    }
+
+    // tests if they at least HAVE the prereq, not if they fullfill it
+    public bool HasPrerequisiteStats(SpeechAction action)
+    {
+        foreach(SpeechPrereq p in action.prereqs)
+        {
+            if (!stats.Select(s => s.abstractStat).ToList().Contains(p.abstractStat)) return false;
+        }
+        return true;
     }
 
     // Start is called before the first frame update

@@ -16,5 +16,8 @@ MonoBehaviour:
   title: Extend an invitation
   description: Classic "will you" style and all that chapter 11 stuff.
   knowledgeThreshold: 0.3
-  prereqs: []
+  prereqs:
+  - abstractStat: {fileID: 11400000, guid: c989ab1e847025143bf539e2744d1ff9, type: 2}
+    threshold: 0
+    comparisonType: 0
   effects: []
