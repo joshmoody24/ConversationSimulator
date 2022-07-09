@@ -8,34 +8,39 @@ public class RoadVisualizer : MonoBehaviour
     public GameObject nodePrefab;
     public Material lineMaterial;
 
-    public HashSet<Segment> drawnSegments;
+    public HashSet<Rode> drawnRodes;
 
     // draws the city in a more logical way for road name generation
-    public void DrawCity(Segment root1, Segment root2)
+    public void DrawCity(Rode root1, Rode root2)
     {
         // the hashset shouldn't be necessary (severed) but bugs
-        drawnSegments = new HashSet<Segment>();
+        drawnRodes = new HashSet<Rode>();
         foreach (Transform child in visualizationParent)
         {
             Destroy(child.gameObject);
         }
-        DrawSegment(root1);
-        DrawSegment(root2);
+        DrawRode(root1);
+        DrawRode(root2);
     }
 
-    void DrawSegment(Segment segment, int depth = 0)
+    void DrawRode(Rode rode, int depth = 0)
     {
-        if (drawnSegments.Contains(segment)) return;
-        drawnSegments.Add(segment);
-        if (depth > 100) return;
-        Instantiate(nodePrefab, segment.start, Quaternion.identity);
-        DrawLine(segment.start, segment.end, segment.highway ? Color.red : Color.blue, segment.highway ? CityManager.instance.options.HIGHWAY_WIDTH : CityManager.instance.options.DEFAULT_WIDTH);
-        if (segment.links.front.Count == 0) return;
-        if (segment.severed) return;
-
-        foreach (Segment s in segment.links.front)
+        if (drawnRodes.Contains(rode)) return;
+        drawnRodes.Add(rode);
+        if (depth > 1000) return;
+        Instantiate(nodePrefab, rode.position, Quaternion.identity, visualizationParent);
+        foreach(Rode conn in rode.GetConnections())
         {
-            DrawSegment(s, depth + 1);
+            if (drawnRodes.Contains(conn)) continue;
+            Color color = rode.highway && conn.highway ? Color.red : Color.blue;
+            float width = rode.highway && conn.highway ? CityManager.instance.options.HIGHWAY_WIDTH : CityManager.instance.options.DEFAULT_WIDTH;
+            DrawLine(rode.position, conn.position, color, width);
+        }
+        if (rode.end) return;
+
+        foreach (Rode c in rode.GetConnections())
+        {
+            DrawRode(c, depth + 1);
         }
     }
 

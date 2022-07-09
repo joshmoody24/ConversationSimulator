@@ -22,6 +22,8 @@ public class CityOptions : ScriptableObject {
 
     public float INTERSECTION_RADIUS = 3f;
 
+    public int MAX_CONNECTIONS_PER_INTERSECTION = 4;
+
     public int MAX_ITERATIONS = 10;
 
     public float ITERATION_TIME = 0.5f;
