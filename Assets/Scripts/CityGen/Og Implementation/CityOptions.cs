@@ -13,6 +13,8 @@ public class CityOptions : ScriptableObject {
     public float DEFAULT_BRANCH_PROBABILITY = 0.2f;
     public float HIGHWAY_TO_STREET_PROBABILITY = 0.25f;
 
+    public int STREET_EXTRA_DELAY = 3;
+
     [Range(0f, 60f)]
     public float BRANCH_ANGLE_VARIATION = 0f;
     [Range(0f, 30f)]
@@ -21,4 +23,6 @@ public class CityOptions : ScriptableObject {
     public float INTERSECTION_RADIUS = 3f;
 
     public int MAX_ITERATIONS = 10;
+
+    public float ITERATION_TIME = 0.5f;
 }

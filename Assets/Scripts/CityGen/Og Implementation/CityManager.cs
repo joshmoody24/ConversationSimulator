@@ -9,14 +9,17 @@ public class CityManager : MonoBehaviour {
 
     public CityOptions options;
 
-    public List<Segment> segs;
+    public List<Segment> segments;
+    PriorityQueue<Segment> Q;
 
     public RoadVisualizer visualizer;
 
+    private int prevId = 0;
+
     private void Start()
     {
-        segs = GenerateCity();
-        visualizer.DrawCity();
+        GenerateCity();
+        visualizer.DrawCityDebug(segments[0], segments[1]);
     }
 
     // singleton (gasp)
@@ -24,29 +27,33 @@ public class CityManager : MonoBehaviour {
         if(instance == null) instance = this;
         else Destroy(this);
     }
-    public List<Segment> GenerateCity(){
-        PriorityQueue<Segment> Q = new PriorityQueue<Segment>();
-        Q.EnqueueRange(InitialRoad());
 
-        // this is the final list of all road segments
-        List<Segment> segments = new List<Segment>();
+    public void GenerateCity(){
+        Q = new PriorityQueue<Segment>();
+        Q.EnqueueRange(InitialRoad());
 
         // temp
         int iteration = 0;
 
-        while(Q.Count > 0 && iteration < options.MAX_ITERATIONS){
-            Segment minSegment = Q.Dequeue();
-            // resolve conflicts
-            bool accepted = ApplyLocalConstraints(ref minSegment, segments);
-
-            if(accepted){
-                segments.Add(minSegment);
-                Q.EnqueueRange(GlobalGoalsGenerate(minSegment));
-            }
-            iteration += 1;
+        while (Q.Count > 0 && iteration < options.MAX_ITERATIONS)
+        {
+            GenerationStep();
+            iteration++;
         }
+         
+    }
 
-        return segments;
+    public void GenerationStep()
+    {
+        Segment minSegment = Q.Dequeue();
+        // resolve conflicts
+        bool accepted = ApplyLocalConstraints(ref minSegment, segments);
+
+        if (accepted)
+        {
+            segments.Add(minSegment);
+            Q.EnqueueRange(GlobalGoalsGenerate(minSegment));
+        }
     }
 
     // merely generates two highway segments going in opposite directions
@@ -54,17 +61,19 @@ public class CityManager : MonoBehaviour {
         Segment s1 = new Segment(
             Vector2.zero,
             new Vector2(options.HIGHWAY_SEGMENT_LENGTH, 0),
-            true
+            true,
+            0
         );
         // mirror it
         Segment s2 = new Segment(
             Vector2.zero,
             new Vector2(s1.start.x - options.HIGHWAY_SEGMENT_LENGTH, 0),
-            true
+            true,
+            0
         );
 
-        s1.links.back.Add(s2);
-        s2.links.back.Add(s1);
+        // s1.links.back.Add(s2);
+        //s2.links.back.Add(s1);
         return new List<Segment>() {s1, s2};
     }
 
@@ -77,7 +86,8 @@ public class CityManager : MonoBehaviour {
 
         if (segments.Count == 0) return true;
 
-        // if this segment intersects more than one road, don't even bother
+        // use the quadtree to snag
+
         List<Segment> intersecting = new List<Segment>();
         foreach (Segment other in segments)
         {
@@ -123,13 +133,11 @@ public class CityManager : MonoBehaviour {
             }
 
             segment.severed = true;
-            return true;
         }
 
 
         // even after doing all that stuff, handle any intersections not handled already
         // messier and not as ideal, but it is necessary
-
         foreach (Segment other in intersecting)
         {
             // if too similar to the road it's intersecting
@@ -143,7 +151,7 @@ public class CityManager : MonoBehaviour {
         }
 
         // some final checks just in case
-        if (segment.GetLength() < options.MIN_LENGTH) return false;
+        //if (segment.GetLength() < options.MIN_LENGTH) return false;
 
         return true;
     }
@@ -170,7 +178,6 @@ public class CityManager : MonoBehaviour {
         Vector2 end = new Vector2(segment.end.x + Mathf.Sin(dir + wiggleAmount) * length, segment.end.y + Mathf.Cos(dir + wiggleAmount) * length);
         Segment straight = new Segment(segment.end, end, segment.highway, segment.delay + 1);
         // chain it to the previous one
-        straight.links.back.Add(segment);
         segment.links.front.Add(straight);
         newSegments.Add(straight);
 
@@ -186,9 +193,13 @@ public class CityManager : MonoBehaviour {
             if(highway && Random.Range(0f,1f) < options.HIGHWAY_TO_STREET_PROBABILITY)
             {
                 highway = false;
-                branchDelay += 1;
+                branchDelay += options.STREET_EXTRA_DELAY;
             }
             Segment branch = new Segment(segment.end, branchEnd, highway, branchDelay);
+            branch.links.back.Add(segment);
+            branch.links.back.Add(straight);
+            straight.links.back.Add(branch);
+            segment.links.front.Add(branch);
             branch.isBranch = true;
             newSegments.Add(branch);
 
@@ -213,8 +224,8 @@ public class CityManager : MonoBehaviour {
         second.links.back.Add(first);
 
         third.severed = true;
-        third.links.front.Add(first);
-        third.links.front.Add(second);
+        //third.links.front.Add(first);
+        //third.links.front.Add(second);
         first.links.front.Add(third);
         second.links.back.Add(third);
 

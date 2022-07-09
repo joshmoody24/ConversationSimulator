@@ -330,6 +330,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56166181}
   m_CullTransparentMesh: 1
+--- !u!1 &142085164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 142085165}
+  m_Layer: 0
+  m_Name: VisParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &142085165
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142085164}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -80.9135, y: -9.082157, z: 373.53204}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &161344555
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   options: {fileID: 11400000, guid: 52854852b87b5ea4686a4fe4afd130f1, type: 2}
-  segs: []
+  segments: []
   visualizer: {fileID: 810499026}
 --- !u!4 &161344557
 Transform:
@@ -1670,6 +1701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de153c176a34c014086ba8e96c93b885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualizationParent: {fileID: 142085165}
   nodePrefab: {fileID: 9136368272788386367, guid: 6c02615cd6466154c880d9e2c2b6b93c,
     type: 3}
   lineMaterial: {fileID: 2100000, guid: 9562ea9d33ecc3548bde0dbcc5c27586, type: 2}

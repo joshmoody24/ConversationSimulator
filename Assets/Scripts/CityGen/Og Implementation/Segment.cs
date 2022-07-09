@@ -13,6 +13,7 @@ public class Segment : IComparable {
     public bool highway;
     public bool severed;
     public bool isBranch = false;
+
     // basically forms a double-linked list but with branches
     public Links links;
 
@@ -78,6 +79,11 @@ public class Segment : IComparable {
     //Check if the lines are interesecting in 2d space
     public bool Intersects(Segment other, out Vector2? position)
     {
+        if (links.front.Contains(other))
+        {
+            position = null;
+            return false;
+        }
         //Direction of the lines
         Vector2 l1_dir = (end - start).normalized;
         Vector2 l2_dir = (other.end - other.start).normalized;
@@ -190,12 +196,12 @@ public class Segment : IComparable {
 
 public class Links
 {
-    public List<Segment> back;
+    // public List<Segment> back;
     public List<Segment> front;
 
     public Links()
     {
-        back = new List<Segment>();
+        // back = new List<Segment>();
         front = new List<Segment>();
     }
 }
