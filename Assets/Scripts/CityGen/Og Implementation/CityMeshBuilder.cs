@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class CityMeshBuilder : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+    // takes raw city segments and generates solid road mesh from it
+    public void GenerateMesh()
     {
         
     }

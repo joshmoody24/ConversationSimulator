@@ -76,8 +76,8 @@ public class CityManager : MonoBehaviour {
             0
         );
 
-        // s1.links.back.Add(s2);
-        //s2.links.back.Add(s1);
+        s1.links.back.Add(s2);
+        s2.links.back.Add(s1);
         return new List<Segment>() {s1, s2};
     }
 
@@ -109,7 +109,7 @@ public class CityManager : MonoBehaviour {
         foreach(Segment s in segments)
         {
             float currentDist = s.DistToPoint(segment.end);
-            if (currentDist < closestDist)
+            if (currentDist < closestDist && s != segment)
             {
                 closestDist = currentDist;
                 closestLine = s;
@@ -125,7 +125,19 @@ public class CityManager : MonoBehaviour {
             float distToIntersection = Mathf.Min(distToStart, distToEnd);
             if(distToIntersection < options.INTERSECTION_RADIUS)
             {
-                Vector2 endpoint = distToStart < distToEnd ? closestLine.start : closestLine.end;
+                Vector2 endpoint;
+                if(distToStart < distToEnd)
+                {
+                    endpoint = closestLine.start;
+                    segment.links.front.Add(closestLine);
+                    segment.severed = true;
+                }
+                else
+                {
+                    endpoint = closestLine.end;
+                    if(closestLine.links.front.Count > 0) segment.links.front.Add(closestLine.links.front[0]);
+                    segment.severed = true;
+                }
                 segment.end = endpoint;
             }
             else
