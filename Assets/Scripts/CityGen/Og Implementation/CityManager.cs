@@ -14,12 +14,10 @@ public class CityManager : MonoBehaviour {
 
     public RoadVisualizer visualizer;
 
-    private int prevId = 0;
-
     private void Start()
     {
         GenerateCity();
-        visualizer.DrawCityDebug(segments[0], segments[1]);
+        visualizer.DrawCity(segments[0], segments[1]);
     }
 
     // singleton (gasp)
@@ -51,8 +49,14 @@ public class CityManager : MonoBehaviour {
 
         if (accepted)
         {
+            // now we can link it up
+            if(minSegment.links.back.Count > 0) minSegment.links.back[0].links.front.Add(minSegment);
             segments.Add(minSegment);
             Q.EnqueueRange(GlobalGoalsGenerate(minSegment));
+        }
+        else if (minSegment.highway)
+        {
+            Debug.Log("Dead highway");
         }
     }
 
@@ -141,7 +145,10 @@ public class CityManager : MonoBehaviour {
         foreach (Segment other in intersecting)
         {
             // if too similar to the road it's intersecting
-            if (Mathf.Abs(other.GetDirection() - segment.GetDirection()) < options.MIN_DEGREE_DIFFERENCE) return false;
+            if (Mathf.Abs(other.GetDirection() - segment.GetDirection()) < options.MIN_DEGREE_DIFFERENCE)
+            {
+                return false;
+            }
 
             Vector2? intersectionPoint;
             segment.Intersects(other, out intersectionPoint);
@@ -177,8 +184,9 @@ public class CityManager : MonoBehaviour {
         float wiggleAmount = Random.Range(-wiggleMax, wiggleMax);
         Vector2 end = new Vector2(segment.end.x + Mathf.Sin(dir + wiggleAmount) * length, segment.end.y + Mathf.Cos(dir + wiggleAmount) * length);
         Segment straight = new Segment(segment.end, end, segment.highway, segment.delay + 1);
-        // chain it to the previous one
-        segment.links.front.Add(straight);
+        // don't chain to the previous one until it's accepted
+        // segment.links.front.Add(straight);
+        straight.links.back.Add(segment);
         newSegments.Add(straight);
 
         float branchProbability = segment.highway ? options.HIGHWAY_BRANCH_PROBABILITY : options.DEFAULT_BRANCH_PROBABILITY;
@@ -197,9 +205,7 @@ public class CityManager : MonoBehaviour {
             }
             Segment branch = new Segment(segment.end, branchEnd, highway, branchDelay);
             branch.links.back.Add(segment);
-            branch.links.back.Add(straight);
-            straight.links.back.Add(branch);
-            segment.links.front.Add(branch);
+            // segment.links.front.Add(branch);
             branch.isBranch = true;
             newSegments.Add(branch);
 
@@ -215,19 +221,19 @@ public class CityManager : MonoBehaviour {
 
         // turn that segment into two new segments
         Segment first = new Segment(segment.start, point, segment.highway);
-        first.links.back = segment.links.back;
         Segment second = new Segment(point, segment.end, segment.highway);
-        second.links.front = segment.links.front;
-        second.isBranch = true;
 
+        first.links.back = segment.links.back;
         first.links.front.Add(second);
         second.links.back.Add(first);
+        second.links.front = segment.links.front;
+
+        second.isBranch = true;
 
         third.severed = true;
         //third.links.front.Add(first);
         //third.links.front.Add(second);
         first.links.front.Add(third);
-        second.links.back.Add(third);
 
         segments.Add(first);
         segments.Add(second);

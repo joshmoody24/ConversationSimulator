@@ -79,7 +79,7 @@ public class Segment : IComparable {
     //Check if the lines are interesecting in 2d space
     public bool Intersects(Segment other, out Vector2? position)
     {
-        if (links.front.Contains(other))
+        if (links.back.Contains(other) || links.front.Contains(other))
         {
             position = null;
             return false;
@@ -196,12 +196,12 @@ public class Segment : IComparable {
 
 public class Links
 {
-    // public List<Segment> back;
+    public List<Segment> back;
     public List<Segment> front;
 
     public Links()
     {
-        // back = new List<Segment>();
+        back = new List<Segment>();
         front = new List<Segment>();
     }
 }
