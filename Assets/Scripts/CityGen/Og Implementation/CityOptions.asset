@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d4903d1c163944687f8f4f05bc21f4, type: 3}
+  m_Name: CityOptions
+  m_EditorClassIdentifier: 
+  HIGHWAY_WIDTH: 1
+  DEFAULT_WIDTH: 1
+  HIGHWAY_SEGMENT_LENGTH: 10
+  HIGHWAY_BRANCH_PROBABILITY: 0.096
+  DEFAULT_BRANCH_PROBABILITY: 0.2
+  HIGHWAY_TO_STREET_PROBABILITY: 0.25
+  BRANCH_ANGLE_VARIATION: 15.7
+  INTERSECTION_RADIUS: 3
+  MAX_ITERATIONS: 100

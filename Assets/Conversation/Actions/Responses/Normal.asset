@@ -18,5 +18,5 @@ MonoBehaviour:
   prereqs:
   - abstractStat: {fileID: 11400000, guid: c989ab1e847025143bf539e2744d1ff9, type: 2}
     threshold: 0.4
-    comparisonType: 1
+    comparisonType: 0
   effects: []
