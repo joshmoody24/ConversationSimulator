@@ -6,6 +6,7 @@ public class CityOptions : ScriptableObject {
     public float DEFAULT_WIDTH = 1f;
     public float HIGHWAY_SEGMENT_LENGTH = 10f;
     public float DEFAULT_SEGMENT_LENGTH = 10f;
+    public float MIN_LENGTH = 1f;
     [Range(0f, 1f)]
     public float HIGHWAY_BRANCH_PROBABILITY = .05f;
     [Range(0f, 1f)]

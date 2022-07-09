@@ -12,6 +12,7 @@ public class Segment : IComparable {
     public int delay = 0;
     public bool highway;
     public bool severed;
+    public bool isBranch = false;
     // basically forms a double-linked list but with branches
     public Links links;
 
@@ -45,6 +46,27 @@ public class Segment : IComparable {
         float height = Mathf.Abs(start.y - end.y);
         Bounds b = new Bounds(center, new Vector2(width, height));
         return b;
+    }
+
+    public Vector2 NearestPointOnSegment(Vector2 point)
+    {
+        // Shift the problem to the origin to simplify the math.    
+        var wander = point - start;
+        var span = end - start;
+
+        // Compute how far along the line is the closest approach to our point.
+        float t = Vector2.Dot(wander, span) / span.sqrMagnitude;
+
+        // Restrict this point to within the line segment from start to end.
+        t = Mathf.Clamp01(t);
+
+        // Return this point.
+        return start + t * span;
+    }
+
+    public float DistToPoint(Vector2 point)
+    {
+        return Vector2.Distance(NearestPointOnSegment(point), point);
     }
 
     public int CompareTo(object obj)

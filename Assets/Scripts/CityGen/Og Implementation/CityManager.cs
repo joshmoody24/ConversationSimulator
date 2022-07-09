@@ -37,13 +37,8 @@ public class CityManager : MonoBehaviour {
         while(Q.Count > 0 && iteration < options.MAX_ITERATIONS){
             Segment minSegment = Q.Dequeue();
             // resolve conflicts
-            Vector2 oldPos = minSegment.end;
             bool accepted = ApplyLocalConstraints(ref minSegment, segments);
-            Vector2 newPos = minSegment.end;
-            if (oldPos != newPos)
-            {
-                Debug.Log("Position changed: " + oldPos + " to " + newPos + " of length " + minSegment.GetLength());
-            }
+
             if(accepted){
                 segments.Add(minSegment);
                 Q.EnqueueRange(GlobalGoalsGenerate(minSegment));
@@ -76,6 +71,13 @@ public class CityManager : MonoBehaviour {
     // checks a segment to make sure it's not doing anything funky
     // (like intersecting weird or whatever)
     public bool ApplyLocalConstraints(ref Segment segment, List<Segment> segments){
+
+        // TODO: speed this up with a quadtree
+        // (currently 10,o00 iterations is about max before exponential explosion
+
+        if (segments.Count == 0) return true;
+
+        // if this segment intersects more than one road, don't even bother
         List<Segment> intersecting = new List<Segment>();
         foreach (Segment other in segments)
         {
@@ -85,6 +87,49 @@ public class CityManager : MonoBehaviour {
                 intersecting.Add(other);
             }
         }
+        if (intersecting.Count > 1) return false;
+
+        // find nearest line (Linq has a bug for some reason)
+        Segment closestLine = segments[0];
+        float closestDist = float.PositiveInfinity;
+        foreach(Segment s in segments)
+        {
+            float currentDist = s.DistToPoint(segment.end);
+            if (currentDist < closestDist)
+            {
+                closestDist = currentDist;
+                closestLine = s;
+            }
+        }
+        Vector2 closestPoint = closestLine.NearestPointOnSegment(segment.end);
+
+        if (closestDist < options.INTERSECTION_RADIUS)
+        {
+            // ideally, join up at an already-existing intersection
+            float distToStart = Vector2.Distance(segment.end, closestLine.start);
+            float distToEnd = Vector2.Distance(segment.end, closestLine.end);
+            float distToIntersection = Mathf.Min(distToStart, distToEnd);
+            if(distToIntersection < options.INTERSECTION_RADIUS)
+            {
+                Vector2 endpoint = distToStart < distToEnd ? closestLine.start : closestLine.end;
+                segment.end = endpoint;
+            }
+            else
+            {
+                // but if we have to, join up in the middle of a street
+                segment.end = closestPoint;
+                // break up the other road at that point
+                SplitSegment(closestLine, closestPoint, ref segments, ref segment);
+            }
+
+            segment.severed = true;
+            return true;
+        }
+
+
+        // even after doing all that stuff, handle any intersections not handled already
+        // messier and not as ideal, but it is necessary
+
         foreach (Segment other in intersecting)
         {
             // if too similar to the road it's intersecting
@@ -97,34 +142,10 @@ public class CityManager : MonoBehaviour {
             segment.end = (Vector2)intersectionPoint;
         }
 
-        return true;
-
-
-        /*
-        // if the new segment is intersecting another one
-        List<Segment> intersecting = new List<Segment>();
-        foreach(Segment other in segments)
-        {
-            Vector2? intersectionPoint;
-            if (segment.Intersects(other, out intersectionPoint))
-            {
-                intersecting.Add(other);
-            }
-        }
-
-        foreach(Segment s in intersecting)
-        {
-            // create an intersection
-            Vector2? intersectionPoint;
-            segment.Intersects(s, out intersectionPoint);
-            if (intersectionPoint == null) continue;
-            SplitSegment(segment, (Vector2)intersectionPoint, ref segments, ref segment);
-            segment.end = (Vector2)intersectionPoint;
-        }
-
+        // some final checks just in case
+        if (segment.GetLength() < options.MIN_LENGTH) return false;
 
         return true;
-        */
     }
 
     // generates new segments from an input segment
@@ -138,9 +159,15 @@ public class CityManager : MonoBehaviour {
 
 
         // continue straight
+
+        // TODO: instead of using wiggle amount to set the direction, sample various perlin noise directions
+        // and move to the area with the highest population
+        // but this might be good enough if I'm lazy
         float length = segment.highway ? options.HIGHWAY_SEGMENT_LENGTH : options.DEFAULT_SEGMENT_LENGTH;
         float dir = segment.GetDirection();
-        Vector2 end = new Vector2(segment.end.x + Mathf.Sin(dir) * length, segment.end.y + Mathf.Cos(dir) * length);
+        float wiggleMax = CityManager.instance.options.BRANCH_ANGLE_VARIATION * (Mathf.PI / 180);
+        float wiggleAmount = Random.Range(-wiggleMax, wiggleMax);
+        Vector2 end = new Vector2(segment.end.x + Mathf.Sin(dir + wiggleAmount) * length, segment.end.y + Mathf.Cos(dir + wiggleAmount) * length);
         Segment straight = new Segment(segment.end, end, segment.highway, segment.delay + 1);
         // chain it to the previous one
         straight.links.back.Add(segment);
@@ -159,10 +186,10 @@ public class CityManager : MonoBehaviour {
             if(highway && Random.Range(0f,1f) < options.HIGHWAY_TO_STREET_PROBABILITY)
             {
                 highway = false;
-                Debug.Log("converted to street");
                 branchDelay += 1;
             }
             Segment branch = new Segment(segment.end, branchEnd, highway, branchDelay);
+            branch.isBranch = true;
             newSegments.Add(branch);
 
         }
@@ -180,6 +207,7 @@ public class CityManager : MonoBehaviour {
         first.links.back = segment.links.back;
         Segment second = new Segment(point, segment.end, segment.highway);
         second.links.front = segment.links.front;
+        second.isBranch = true;
 
         first.links.front.Add(second);
         second.links.back.Add(first);

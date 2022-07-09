@@ -12,12 +12,12 @@ public class RoadVisualizer : MonoBehaviour
     {
         foreach(Segment s in CityManager.instance.segs)
         {
-            Instantiate(nodePrefab, s.start, Quaternion.identity);
-            DrawLine(s.start, s.end, s.highway ? Color.red : Color.blue);
+            if(s.isBranch) Instantiate(nodePrefab, s.start, Quaternion.identity);
+            DrawLine(s.start, s.end, s.highway ? Color.red : Color.blue, s.highway ? CityManager.instance.options.HIGHWAY_WIDTH : CityManager.instance.options.DEFAULT_WIDTH);
         }
     }
 
-    private void DrawLine(Vector3 start, Vector3 end, Color color)
+    private void DrawLine(Vector3 start, Vector3 end, Color color, float width = 0.1f)
     {
         GameObject line = new GameObject("line");
         line.transform.position = start;
@@ -25,8 +25,8 @@ public class RoadVisualizer : MonoBehaviour
         lineRenderer.material = lineMaterial;
         lineRenderer.startColor = color;
         lineRenderer.endColor = color;
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
         lineRenderer.SetPosition(0, start);
         lineRenderer.SetPosition(1, end);
     }
