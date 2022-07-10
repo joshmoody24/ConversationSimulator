@@ -5,7 +5,6 @@ using UnityEngine;
 using System.Linq;
 
 // a 'road node'
-[System.Serializable]
 public class Rode : IComparable
 {
     public Vector2 position;
@@ -29,7 +28,10 @@ public class Rode : IComparable
         this.delay = delay;
         this.connections = new HashSet<Rode>();
         this.parent = parent;
-        if(parent != null) connections.Add(parent);
+        if (parent != null) {
+            connections.Add(parent);
+            parent.AddConnection(this);
+         }
     }
 
     public void AddConnection(Rode r)
@@ -78,7 +80,7 @@ public class Rode : IComparable
         //Step 2: are the lines parallel? -> no solutions
         if (IsParallel(l1_normal, l2_normal))
         {
-            Debug.Log("The lines are parallel so no solutions!");
+            //Debug.Log("The lines are parallel so no solutions!");
             return false;
         }
 
@@ -87,7 +89,7 @@ public class Rode : IComparable
         //Pick one point on each line and test if the vector between the points is orthogonal to one of the normals
         if (IsOrthogonal(conn1a - conn2a, l1_normal))
         {
-            Debug.Log("Same line so infinite amount of solutions!");
+            //Debug.Log("Same line so infinite amount of solutions!");
             //Return false anyway
             return false;
         }
@@ -103,7 +105,7 @@ public class Rode : IComparable
         //Step 5: but we have line segments so we have to check if the intersection point is within the segment
         if (IsBetween(conn1a, conn1b, intersectPoint) && IsBetween(conn2a, conn2b, intersectPoint))
         {
-            Debug.Log("We have an intersection point!");
+            //Debug.Log("We have an intersection point!");
             // Vector2 intersection = intersectPoint;
             return true;
         }
@@ -160,6 +162,21 @@ public class Rode : IComparable
 
     // computes angle using node connection as a base
     public float Angle()
+    {
+        if (!connections.Contains(parent))
+        {
+            throw new Exception("Cannot use unconnected Rode as base for angle calculation");
+        }
+        // compute absolute angle with baseRode
+        Vector2 v = parent.position - position;
+        // is this actually a cross product? Just copying code lol
+        float dir = parent.position.x - position.x;
+        float angle = Mathf.Sign(dir) * Vector2.Angle(Vector2.up, v) * (Mathf.PI / 180);
+        return angle + Mathf.PI;
+    }
+
+    // computes angle using an arbitrary node as the parent
+    public float Angle(Rode rode)
     {
         if (!connections.Contains(parent))
         {

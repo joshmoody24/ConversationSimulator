@@ -15,6 +15,7 @@ public class CityManager : MonoBehaviour {
     PriorityQueue<Rode> Q;
 
     public RoadVisualizer visualizer;
+    public CityMeshBuilder meshBuilder;
 
     public List<Rode> debugView;
 
@@ -23,6 +24,8 @@ public class CityManager : MonoBehaviour {
         GenerateCity();
         visualizer.DrawCity(rootRode1, rootRode2);
         //StartCoroutine(SlowCityGeneration());
+
+        // meshBuilder.GeneratePlots(rootRode1);
     }
 
     // singleton (gasp)
@@ -55,7 +58,6 @@ public class CityManager : MonoBehaviour {
 
         if (toAdd != null)
         {
-            print(toAdd.position);
             rodes.Add(toAdd);
             toAdd.parent.AddConnection(toAdd);
             Q.EnqueueRange(GlobalGoalsGenerate(toAdd));
@@ -148,7 +150,6 @@ public class CityManager : MonoBehaviour {
                 if (newConnectionEnd == oldConnectionEnd || newConnectionStart == oldConnectionStart) continue;
                 if (Rode.ConnectionsOverlap(newConnectionStart, newConnectionEnd, oldConnectionStart, oldConnectionEnd))
                 {
-                    Debug.Log("intersected something");
                     return null;
                 }
             }
