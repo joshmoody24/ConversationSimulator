@@ -6,33 +6,40 @@ using UnityEngine;
 public class MapModule
 {
     public GameObject gameObj;
-    public int upId;
-    public int rightId;
-    public int downId;
-    public int leftId;
+    public MapModulePrototype prototype;
+
+    public Connection up;
+    public Connection right;
+    public Connection down;
+    public Connection left;
+
     public int rotation;
 
-    public MapModule(GameObject obj, int up, int right, int down, int left, MapModulePrototype.Rotation rotation)
+    public MapModule(MapModulePrototype p, GameObject obj, Connection up, Connection right, Connection down, Connection left, int rotation)
     {
+        prototype = p;
         gameObj = obj;
-        upId = up;
-        rightId = right;
-        downId = down;
-        leftId = left;
-        switch (rotation)
+        this.up = up;
+        this.right= right;
+        this.down = down;
+        this.left = left;
+        this.rotation = rotation;
+    }
+
+    public bool CanConnect(MapModule other, MapSlot.Direction dir)
+    {
+        switch (dir)
         {
-            case MapModulePrototype.Rotation.Degree0:
-                this.rotation = 0;
-                break;
-            case MapModulePrototype.Rotation.Degree90:
-                this.rotation = 90;
-                break;
-            case MapModulePrototype.Rotation.Degree180:
-                this.rotation = 180;
-                break;
-            case MapModulePrototype.Rotation.Degree270:
-                this.rotation = 270;
-                break;
+            case MapSlot.Direction.Up:
+                return other.down.id == up.id && !up.excluded.Contains(other.prototype);
+            case MapSlot.Direction.Right:
+                return other.left.id == right.id && !right.excluded.Contains(other.prototype);
+            case MapSlot.Direction.Down:
+                return other.up.id == down.id && !down.excluded.Contains(other.prototype);
+            case MapSlot.Direction.Left:
+                return other.right.id == left.id && !left.excluded.Contains(other.prototype);
         }
+
+        return false;
     }
 }

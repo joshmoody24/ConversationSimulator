@@ -10,24 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14228249c1ba5bc4eafecdfcfd8c59d5, type: 3}
-  m_Name: 4 Way
+  m_Name: Empty
   m_EditorClassIdentifier: 
-  gameObject: {fileID: 919132149155446097, guid: da4cedc3da8c0e948b40940f226906ad,
+  gameObject: {fileID: 919132149155446097, guid: 4b1615a6a2ea5dd45804938b1b7fbb2a,
     type: 3}
   symmetry: 0
-  upId: 1
-  rightId: 1
-  downId: 1
-  leftId: 1
   up:
-    id: 1
+    id: 0
     excluded: []
   right:
-    id: 1
+    id: 0
     excluded: []
   down:
-    id: 1
+    id: 0
     excluded: []
   left:
-    id: 1
+    id: 0
     excluded: []

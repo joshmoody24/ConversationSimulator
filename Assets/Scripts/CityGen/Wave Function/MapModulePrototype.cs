@@ -8,60 +8,97 @@ public class MapModulePrototype : ScriptableObject
     public GameObject gameObject;
     public Symmetry symmetry;
     public enum Symmetry { X, T, I, L, N }
-    public int upId;
-    public int rightId;
-    public int downId;
-    public int leftId;
+
+    public Connection up;
+    public Connection right;
+    public Connection down;
+    public Connection left;
 
     public enum Rotation { Degree0, Degree90, Degree180, Degree270 }
 
     public List<MapModule> generateAllModules()
     {
         List<MapModule> modules = new List<MapModule>();
-        modules.Add(generateModule(Rotation.Degree0));
+        modules.Add(generateModule(0));
         if (symmetry == Symmetry.X) return modules;
-        modules.Add(generateModule(Rotation.Degree90));
+        modules.Add(generateModule(90));
         if (symmetry == Symmetry.I) return modules;
-        modules.Add(generateModule(Rotation.Degree270));
-        modules.Add(generateModule(Rotation.Degree180));
+        modules.Add(generateModule(270));
+        modules.Add(generateModule(180));
         return modules;
     }
 
-    public MapModule generateModule(Rotation rotation)
+    public MapModule generateModule(int rotation)
     {
         int cycles = 0;
         switch (rotation)
         {
-            case Rotation.Degree0:
+            case 0:
                 cycles = 0;
                 break;
-            case Rotation.Degree90:
+            case 90:
                 cycles = 3;
                 break;
-            case Rotation.Degree180:
+            case 180:
                 cycles = 2;
                 break;
-            case Rotation.Degree270:
+            case 270:
                 cycles = 1;
+                break;
+            default:
+                cycles = 0;
                 break;
         }
 
         // rotate connectors
-        Queue<int> shuffler = new Queue<int>();
-        shuffler.Enqueue(upId);
-        shuffler.Enqueue(rightId);
-        shuffler.Enqueue(downId);
-        shuffler.Enqueue(leftId);
+        Queue<Connection> shuffler = new Queue<Connection>();
+        shuffler.Enqueue(up);
+        shuffler.Enqueue(right);
+        shuffler.Enqueue(down);
+        shuffler.Enqueue(left);
         for (int i = 0; i < cycles; i++)
         {
             shuffler.Enqueue(shuffler.Dequeue());
         }
 
-        int up = shuffler.Dequeue();
-        int right = shuffler.Dequeue();
-        int down = shuffler.Dequeue();
-        int left = shuffler.Dequeue();
+        var ups = shuffler.Dequeue();
+        var rights = shuffler.Dequeue();
+        var downs = shuffler.Dequeue();
+        var lefts = shuffler.Dequeue();
 
-        return new MapModule(gameObject, up, right, down, left, rotation);
+        return new MapModule(
+            this,
+            gameObject,
+            ups,
+            rights,
+            downs,
+            lefts,
+            rotation);
+    }
+}
+
+[System.Serializable]
+public class Connection
+{
+    public int id;
+    public List<MapModulePrototype> excluded;
+
+    public Connection()
+    {
+        id = 0;
+        excluded = new List<MapModulePrototype>();
+    }
+
+
+    public Connection(int id)
+    {
+        this.id = id;
+        excluded = new List<MapModulePrototype>();
+    }
+
+    public Connection(int id, List<MapModulePrototype> exclude)
+    {
+        this.id = id;
+        excluded = exclude;
     }
 }

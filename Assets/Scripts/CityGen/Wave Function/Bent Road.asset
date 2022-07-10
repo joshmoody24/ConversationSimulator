@@ -15,7 +15,17 @@ MonoBehaviour:
   gameObject: {fileID: 919132149155446097, guid: 20dc27d9ff7027f43b8379f09cc1ea0b,
     type: 3}
   symmetry: 3
-  upId: 1
-  rightId: 0
-  downId: 0
-  leftId: 1
+  up:
+    id: 1
+    excluded:
+    - {fileID: 11400000, guid: f1f28c30d8414f14c8f825ecdcba5073, type: 2}
+  right:
+    id: 0
+    excluded: []
+  down:
+    id: 0
+    excluded: []
+  left:
+    id: 1
+    excluded:
+    - {fileID: 11400000, guid: f1f28c30d8414f14c8f825ecdcba5073, type: 2}

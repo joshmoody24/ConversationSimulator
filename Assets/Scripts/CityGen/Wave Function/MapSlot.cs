@@ -8,7 +8,7 @@ using UnityEngine;
 public class MapSlot
 {
     public List<MapModule> possibleModules;
-    public Vector2 position;
+    public Vector2Int position;
 
     public MapSlot neighborAbove;
     public MapSlot neighborRight;
@@ -19,7 +19,7 @@ public class MapSlot
 
     public MapSlot(List<MapModule> possibleModules, int x, int y)
     {
-        this.position = new Vector2(x, y);
+        this.position = new Vector2Int(x, y);
         this.possibleModules = possibleModules;
     }
 
@@ -47,16 +47,16 @@ public class MapSlot
     {
         if (collapsed) return false;
         // get possible connections
-        List<int> topConnectors = neighborAbove?.possibleModules.Select(m => m.downId).Distinct().ToList();
-        List<int> rightConnectors = neighborRight?.possibleModules.Select(m => m.leftId).Distinct().ToList();
-        List<int> downConnectors = neighborBelow?.possibleModules.Select(m => m.upId).Distinct().ToList();
-        List<int> leftConnectors = neighborLeft?.possibleModules.Select(m => m.rightId).Distinct().ToList();
+        List<MapModule> abovePossibilities = neighborAbove?.possibleModules.ToList();
+        List<MapModule> rightPossibilities = neighborRight?.possibleModules.ToList();
+        List<MapModule> belowPossibilities = neighborBelow?.possibleModules.ToList();
+        List<MapModule> leftPossibilities = neighborLeft?.possibleModules.ToList();
 
         List<MapModule> newlyPossible = possibleModules
-            .Where(m => topConnectors == null || topConnectors.Contains(m.upId))
-            .Where(m => rightConnectors == null || rightConnectors.Contains(m.rightId))
-            .Where(m => downConnectors == null || downConnectors.Contains(m.downId))
-            .Where(m => leftConnectors == null || leftConnectors.Contains(m.leftId))
+            .Where(m => abovePossibilities == null || abovePossibilities.Where(c => c.CanConnect(m, Direction.Down)).Count() > 0)
+            .Where(m => rightPossibilities == null || rightPossibilities.Where(c => c.CanConnect(m, Direction.Left)).Count() > 0)
+            .Where(m => belowPossibilities == null || belowPossibilities.Where(c => c.CanConnect(m, Direction.Up)).Count() > 0)
+            .Where(m => leftPossibilities == null || leftPossibilities.Where(c => c.CanConnect(m, Direction.Right)).Count() > 0)
             .ToList();
 
         bool changed = newlyPossible.Count < possibleModules.Count;
@@ -83,4 +83,6 @@ public class MapSlot
         if (list.Count == 0) throw new System.Exception("Tried to choose from empty list");
         return list[Random.Range(0, list.Count)];
     }
+
+    public enum Direction { Up, Right, Down, Left };
 }

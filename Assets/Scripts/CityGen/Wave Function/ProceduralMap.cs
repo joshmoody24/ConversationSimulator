@@ -10,8 +10,9 @@ public class ProceduralMap : MonoBehaviour
     public int sizeOfTile = 42;
 
     public List<MapModule> generatedModules;
+    public List<MapModulePrototype> mainStreetAllowed;
 
-    public List<MapSlot> slots;
+    public Dictionary<Vector2Int, MapSlot> slots;
 
     public int debugIterations = 1;
 
@@ -28,11 +29,11 @@ public class ProceduralMap : MonoBehaviour
 
     private void Visualize()
     {
-        foreach (MapSlot slot in slots){
+        foreach (MapSlot slot in slots.Values){
             if(slot.possibleModules.Count == 1)
             {
-                GameObject module = Instantiate(slot.possibleModules[0].gameObj, slot.position * sizeOfTile, Quaternion.identity);
-                module.transform.Rotate(new Vector3(0, 180, slot.possibleModules[0].rotation));
+                GameObject module = Instantiate(slot.possibleModules[0].gameObj, new Vector3(slot.position.x, 0, slot.position.y) * sizeOfTile, Quaternion.identity);
+                module.transform.Rotate(new Vector3(-90, 180, slot.possibleModules[0].rotation));
             }
         }
     }
@@ -48,16 +49,16 @@ public class ProceduralMap : MonoBehaviour
 
     private void InitializeMap()
     {
-        slots = new List<MapSlot>();
+        slots = new Dictionary<Vector2Int, MapSlot>();
         for(int x = 0; x < mapSize; x++)
         {
             for(int y = 0; y < mapSize; y++)
             {
-                slots.Add(new MapSlot(generatedModules, x, y));
+                slots[new Vector2Int(x,y)] = new MapSlot(generatedModules, x, y);
             }
         }
         // link them all to each other
-        foreach(MapSlot slot in slots)
+        foreach(MapSlot slot in slots.Values)
         {
             slot.SetNeighbors(GetNeighbors(slot));
         }
@@ -66,23 +67,30 @@ public class ProceduralMap : MonoBehaviour
     public MapSlot GetLowestEntropy()
     {
         if (slots.Count == 0) return null;
-        List<MapSlot> fuzzy = slots.Where(s => s.possibleModules.Count > 1).ToList();
+        List<MapSlot> fuzzy = slots.Values.Where(s => s.possibleModules.Count > 1).ToList();
         if (fuzzy.Count == 0) return null;
         int lowest = fuzzy.Min(s => s.possibleModules.Count);
-        List<MapSlot> lowestList = slots.Where(s => s.possibleModules.Count == lowest).ToList();
+        List<MapSlot> lowestList = slots.Values.Where(s => s.possibleModules.Count == lowest).ToList();
         return lowestList[Random.Range(0, lowestList.Count)];
     }
 
-    
+    MapSlot GetSlot(int x, int y)
+    {
+        MapSlot slot = null;
+        slots.TryGetValue(new Vector2Int(x, y), out slot);
+        return slot;
+    }
 
     // u, r, d, l
     public (MapSlot, MapSlot,  MapSlot, MapSlot) GetNeighbors(MapSlot slot)
     {
-        MapSlot up = slots.FirstOrDefault(s => s.position.x == slot.position.x && s.position.y == slot.position.y + 1);
-        MapSlot right = slots.FirstOrDefault(s => s.position.x == slot.position.x + 1 && s.position.y == slot.position.y);
-        MapSlot down = slots.FirstOrDefault(s => s.position.x == slot.position.x && s.position.y == slot.position.y - 1);
-        MapSlot left = slots.FirstOrDefault(s => s.position.x == slot.position.x - 1 && s.position.y == slot.position.y);
+        Vector2Int p = slot.position;
+        int x = p.x;
+        int y = p.y;
+        MapSlot up = GetSlot(x, y+1);
+        MapSlot right = GetSlot(x + 1, y);
+        MapSlot down = GetSlot(x, y - 1);
+        MapSlot left = GetSlot(x - 1, y);
         return (up, right, down, left);
     }
-
 }

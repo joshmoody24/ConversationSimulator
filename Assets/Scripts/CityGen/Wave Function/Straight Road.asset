@@ -19,3 +19,15 @@ MonoBehaviour:
   rightId: 1
   downId: 0
   leftId: 1
+  up:
+    id: 0
+    excluded: []
+  right:
+    id: 1
+    excluded: []
+  down:
+    id: 0
+    excluded: []
+  left:
+    id: 1
+    excluded: []
