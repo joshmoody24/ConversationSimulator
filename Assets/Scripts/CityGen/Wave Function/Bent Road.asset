@@ -17,8 +17,7 @@ MonoBehaviour:
   symmetry: 3
   up:
     id: 1
-    excluded:
-    - {fileID: 11400000, guid: f1f28c30d8414f14c8f825ecdcba5073, type: 2}
+    excluded: []
   right:
     id: 0
     excluded: []
@@ -27,5 +26,4 @@ MonoBehaviour:
     excluded: []
   left:
     id: 1
-    excluded:
-    - {fileID: 11400000, guid: f1f28c30d8414f14c8f825ecdcba5073, type: 2}
+    excluded: []

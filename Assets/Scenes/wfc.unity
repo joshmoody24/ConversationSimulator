@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 1409926082}
   - component: {fileID: 1409926083}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MapSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,13 +263,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 115036369b7be3e4481a8bdb4a58b010, type: 2}
   - {fileID: 11400000, guid: 115036369b7be3e4481a8bdb4a58b010, type: 2}
   - {fileID: 11400000, guid: 115036369b7be3e4481a8bdb4a58b010, type: 2}
-  mapSize: 200
+  mapSize: 100
   sizeOfTile: 42
   generatedModules: []
   mainStreetAllowed:
   - {fileID: 11400000, guid: f00c2806421d1754f92c05a71118d947, type: 2}
   - {fileID: 11400000, guid: 115036369b7be3e4481a8bdb4a58b010, type: 2}
-  debugIterations: 5000
+  debugIterations: 10000
 --- !u!1 &2007205974
 GameObject:
   m_ObjectHideFlags: 0

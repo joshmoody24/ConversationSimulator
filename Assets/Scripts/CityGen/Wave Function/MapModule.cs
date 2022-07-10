@@ -31,13 +31,13 @@ public class MapModule
         switch (dir)
         {
             case MapSlot.Direction.Up:
-                return other.down.id == up.id && !up.excluded.Contains(other.prototype);
+                return other.down.id == up.id && !up.excluded.Contains(other.prototype) && !other.down.excluded.Contains(prototype);
             case MapSlot.Direction.Right:
-                return other.left.id == right.id && !right.excluded.Contains(other.prototype);
+                return other.left.id == right.id && !right.excluded.Contains(other.prototype) && !other.left.excluded.Contains(prototype);
             case MapSlot.Direction.Down:
-                return other.up.id == down.id && !down.excluded.Contains(other.prototype);
+                return other.up.id == down.id && !down.excluded.Contains(other.prototype) && !other.up.excluded.Contains(prototype);
             case MapSlot.Direction.Left:
-                return other.right.id == left.id && !left.excluded.Contains(other.prototype);
+                return other.right.id == left.id && !left.excluded.Contains(other.prototype) && !other.right.excluded.Contains(prototype);
         }
 
         return false;
